@@ -10,8 +10,8 @@ const ThemeSwitch = () => {
     <Switch
       checked={isDark}
       onChange={(e) => setTheme(e.target.checked ? "dark" : "light")}
-      iconOn={<SunIcon filled />}
-      iconOff={<MoonIcon filled />}
+      iconOn={<SunIcon />}
+      iconOff={<MoonIcon />}
     />
   );
 };
