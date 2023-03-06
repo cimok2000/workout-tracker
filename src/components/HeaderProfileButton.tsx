@@ -1,7 +1,8 @@
 import type { Session } from "next-auth";
-import { Avatar, Dropdown } from "@nextui-org/react";
+import { Avatar, Dropdown, Text } from "@nextui-org/react";
 import { signIn, signOut } from "next-auth/react";
-import Link from "next/link";
+import type { Key } from "react";
+import { useRouter } from "next/router";
 
 type HeaderProfileButtonProps = {
   sessionData: Session | null;
@@ -10,35 +11,90 @@ type HeaderProfileButtonProps = {
 type MenuItem = {
   key: string;
   label: string;
-  href?: string;
   onClick?: () => void;
   divider?: boolean;
   color?: "default" | "primary" | "secondary" | "success" | "warning" | "error";
+  bold?: boolean;
 };
 
-const loggedInMenuItems: MenuItem[] = [
-  { key: "profile", label: "Profile", href: "/profile" },
-  { key: "dashboard", label: "Dashboard", href: "/dashboard" },
-  { key: "settings", label: "Settings", href: "/settings" },
-  {
-    key: "signout",
-    label: "Sign out",
-    onClick: () => void signOut(),
-    divider: true,
-    color: "error",
-  },
-];
-
-const loggedOutMenuItems: MenuItem[] = [
-  {
-    key: "signin",
-    label: "Sign in",
-    onClick: () => void signIn(),
-    color: "primary",
-  },
-];
-
 const HeaderProfileButton = (props: HeaderProfileButtonProps) => {
+  const router = useRouter();
+
+  const loggedInUserLabel = () => {
+    if (props.sessionData) {
+      if (props.sessionData.user.name) {
+        return props.sessionData.user.name.toString();
+      } else if (props.sessionData.user.email) {
+        return props.sessionData.user.email.toString();
+      } else {
+        return "User Error";
+      }
+    } else {
+      return "Auth Error";
+    }
+  };
+
+  const loggedInMenuItems: MenuItem[] = [
+    {
+      key: "loggedin",
+      label: `Logged in as ${loggedInUserLabel()}`,
+      bold: true,
+      color: "primary",
+    },
+    {
+      key: "profile",
+      label: "Profile",
+      divider: true,
+      color: "primary",
+      onClick: () => void router.push("/profile"),
+    },
+    {
+      key: "dashboard",
+      label: "Dashboard",
+      color: "primary",
+      onClick: () => void router.push("/dashboard"),
+    },
+    {
+      key: "settings",
+      label: "Settings",
+      color: "primary",
+      divider: true,
+      onClick: () => void router.push("/settings"),
+    },
+    {
+      key: "help",
+      label: "Help & Feedback",
+      color: "warning",
+      onClick: () => void router.push("/help"),
+      divider: true,
+    },
+    {
+      key: "signout",
+      label: "Sign out",
+      onClick: () => void signOut(),
+      divider: true,
+      color: "error",
+    },
+  ];
+
+  const loggedOutMenuItems: MenuItem[] = [
+    {
+      key: "signin",
+      label: "Sign in",
+      onClick: () => void signIn(),
+      color: "primary",
+    },
+  ];
+
+  const menuAction = (actionKey: Key) => {
+    const action = loggedInMenuItems.find((item) => item.key === actionKey);
+    if (action) {
+      if (action.onClick) {
+        action.onClick();
+      }
+    }
+  };
+
   let menuItems = loggedOutMenuItems;
   let profilePicture =
     "https://cdn.discordapp.com/attachments/743171804096364646/1081068865448063056/blank-profile-picture-973460_1280.png";
@@ -50,7 +106,7 @@ const HeaderProfileButton = (props: HeaderProfileButtonProps) => {
   }
   return (
     <>
-      <Dropdown>
+      <Dropdown placement="bottom-right" isBordered>
         <Dropdown.Trigger>
           <Avatar
             bordered
@@ -60,18 +116,18 @@ const HeaderProfileButton = (props: HeaderProfileButtonProps) => {
             src={profilePicture}
           />
         </Dropdown.Trigger>
-        <Dropdown.Menu aria-label="Static Actions" items={menuItems}>
+        <Dropdown.Menu
+          aria-label="Static Actions"
+          items={menuItems}
+          onAction={(key) => menuAction(key)}
+        >
           {menuItems.map((item) => (
             <Dropdown.Item
               key={item.key}
               withDivider={item.divider}
               color={item.color ? item.color : "default"}
             >
-              {item.href ? (
-                <Link href={item.href}>{item.label}</Link>
-              ) : (
-                <div onClick={item.onClick}>{item.label}</div>
-              )}
+              <Text b={item.bold}>{item.label}</Text>
             </Dropdown.Item>
           ))}
         </Dropdown.Menu>

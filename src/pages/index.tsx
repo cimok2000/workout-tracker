@@ -1,11 +1,11 @@
 import { type NextPage } from "next";
 // import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 // import { api } from "../utils/api";
 import Header from "../components/Header";
-import { Card, Grid, Text } from "@nextui-org/react";
+import { Button, Card, Grid, Text } from "@nextui-org/react";
 
 const Home: NextPage = (props) => {
   const { data: sessionData } = useSession();
@@ -36,6 +36,9 @@ const Home: NextPage = (props) => {
         <Text h1 weight="bold" color="white">
           Welcome Back
         </Text>
+        <Button onClick={() => void signIn()}>
+          {sessionData ? "Sign Out" : "Sign In"}
+        </Button>
         <Grid.Container justify="center">
           <Grid xl={8} md={10} sm={8}>
             <Card
@@ -53,27 +56,29 @@ const Home: NextPage = (props) => {
                 src="https://www.hussle.com/blog/wp-content/uploads/2020/12/Gym-structure-1080x675.png"
                 objectFit="cover"
                 width="100%"
+                height="100%"
                 alt="Workout Image"
               />
             </Card>
-            {/* <Card
+            <Card
               isPressable
               isHoverable
               variant="bordered"
-              onPress={() => gotoPage("/dashboard/workout")}
+              onPress={() => gotoPage("/dashboard")}
             >
               <Card.Header className="z-1 absolute top-1">
                 <Text h2 weight="bold" color="white">
-                  Workout
+                  Dashboard
                 </Text>
               </Card.Header>
               <Card.Image
-                src="https://www.hussle.com/blog/wp-content/uploads/2020/12/Gym-structure-1080x675.png"
+                src="https://cdn.discordapp.com/attachments/743171804096364646/1082418989952663623/pexels-victor-freitas-2261477.jpg"
                 objectFit="cover"
                 width="100%"
+                height="100%"
                 alt="Workout Image"
               />
-            </Card> */}
+            </Card>
           </Grid>
         </Grid.Container>
       </main>
