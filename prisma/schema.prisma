@@ -51,14 +51,14 @@ model User {
     accounts      Account[]
     sessions      Session[]
     workouts      Workout[]
-    targetWeight  Int
+    targetWeight  Int?      @default(0)
     weights       Weight[]
     meals         Meal[]
     steps         Steps[]
     sleeps        Sleep[]
     badges        Badge[]
-    streak        Int
-    points        Int
+    streak        Int?      @default(0)
+    points        Int?      @default(0)
 }
 
 model VerificationToken {

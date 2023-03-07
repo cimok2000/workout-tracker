@@ -86,15 +86,6 @@ const HeaderProfileButton = (props: HeaderProfileButtonProps) => {
     },
   ];
 
-  const menuAction = (actionKey: Key) => {
-    const action = loggedInMenuItems.find((item) => item.key === actionKey);
-    if (action) {
-      if (action.onClick) {
-        action.onClick();
-      }
-    }
-  };
-
   let menuItems = loggedOutMenuItems;
   let profilePicture =
     "https://cdn.discordapp.com/attachments/743171804096364646/1081068865448063056/blank-profile-picture-973460_1280.png";
@@ -104,6 +95,17 @@ const HeaderProfileButton = (props: HeaderProfileButtonProps) => {
       : profilePicture;
     menuItems = loggedInMenuItems;
   }
+
+  const menuAction = (actionKey: Key) => {
+    const action = menuItems.find((item) => item.key === actionKey);
+    console.log(action);
+
+    if (action) {
+      if (action.onClick) {
+        action.onClick();
+      }
+    }
+  };
   return (
     <>
       <Dropdown placement="bottom-right" isBordered>

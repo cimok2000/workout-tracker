@@ -50,7 +50,7 @@ const Header = (props: HeaderProps) => {
     {
       key: "login",
       label: "Login",
-      onClick: () => void signIn(),
+      onClick: () => console.log("Login"),
     },
   ];
 

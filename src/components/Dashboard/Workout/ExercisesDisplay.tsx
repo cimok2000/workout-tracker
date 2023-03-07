@@ -12,7 +12,6 @@ const ExercisesDisplay = ({
     <Table shadow={false} bordered striped compact>
       <Table.Header>
         <Table.Column>Name</Table.Column>
-        <Table.Column>Description</Table.Column>
         <Table.Column>Sets</Table.Column>
         <Table.Column>Reps</Table.Column>
         <Table.Column>Weight</Table.Column>
@@ -22,7 +21,6 @@ const ExercisesDisplay = ({
         {(exercise) => (
           <Table.Row key={exercise.name}>
             <Table.Cell>{exercise.name}</Table.Cell>
-            <Table.Cell>{exercise.description}</Table.Cell>
             <Table.Cell>{exercise.sets}</Table.Cell>
             <Table.Cell>{exercise.reps}</Table.Cell>
             <Table.Cell>{exercise.weight}</Table.Cell>
